@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dino Quiz Battle</title>
-
+<link rel="stylesheet" href="../tests/dino.css">
 </head>
 <body>
 <style>
-/*dino.css*/
+  /*dino.css*/
 
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
 :root{
@@ -29,11 +29,36 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 /* TITLE */
-#s-title{flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:30px 20px}
+#s-title{flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:30px 20px;position:relative}
 .game-title{font-family:var(--px);font-size:18px;color:var(--yellow);text-align:center;line-height:2;text-shadow:4px 4px 0 #7a6000,0 0 30px rgba(245,200,66,.3);letter-spacing:2px}
 .sub-title{font-family:var(--vt);font-size:20px;color:var(--dim);letter-spacing:5px}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.title-dino{animation:bob 1.4s ease-in-out infinite}
+.title-dino{
+  animation:bob 1.4s ease-in-out infinite;
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  z-index:1;
+}
+.title-dino::before{
+  content:'';
+  position:absolute;
+  width:110px;height:110px;
+  background:radial-gradient(circle,rgba(78,203,113,.25) 0%,rgba(78,203,113,0) 70%);
+  border-radius:50%;
+  z-index:-1;
+  animation:dinoGlow 2.4s ease-in-out infinite;
+}
+.title-dino::after{
+  content:'';
+  position:absolute;
+  bottom:-6px;
+  width:56px;height:12px;
+  background:radial-gradient(ellipse,rgba(0,0,0,.5) 0%,rgba(0,0,0,0) 75%);
+  border-radius:50%;
+  animation:dinoShadow 1.4s ease-in-out infinite;
+}
+@keyframes dinoGlow{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+@keyframes dinoShadow{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(.8);opacity:.3}}
 .pu-legend{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;max-width:520px;width:100%}
 .pul-item{background:var(--panel2);border:1px solid var(--border);padding:6px;text-align:center;font-size:24px}
 .pul-item span{display:block;font-size:14px;color:var(--dim)}
@@ -48,6 +73,63 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .pbtn.r{color:var(--red);border-color:var(--red);box-shadow:4px 4px 0 #700000}
 .pbtn.sm{font-size:7px;padding:7px 12px}
 .pbtn:disabled{opacity:.4;pointer-events:none}
+
+/* =========================================================
+   HOME / HUB SCREEN
+   ========================================================= */
+#s-home{flex-direction:column;align-items:stretch;height:100vh;overflow:hidden}
+.home-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;background:var(--panel);border-bottom:2px solid var(--border);
+  flex-shrink:0;
+}
+.home-title-txt{font-family:var(--px);font-weight:700;font-size:13px;color:var(--yellow)}
+.title-menu-btn.static{position:static}
+.home-scroll{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;max-width:600px;width:100%;margin:0 auto}
+
+.home-card{
+  background:var(--panel);border:2px solid var(--border);
+  padding:16px;display:flex;flex-direction:column;gap:10px;
+}
+.home-card-lbl{font-family:var(--px);font-weight:700;font-size:9px;color:var(--dim);letter-spacing:1px}
+
+.streak-card{border-color:var(--orange);background:linear-gradient(135deg,var(--panel) 60%,rgba(255,122,48,.06))}
+.home-streak-row{display:flex;align-items:center;gap:14px}
+.home-streak-num{
+  font-family:var(--px);font-weight:900;font-size:38px;color:var(--orange);
+  text-shadow:0 0 20px rgba(255,122,48,.4);line-height:1;
+}
+.home-streak-txt{font-size:15px;color:var(--dim);line-height:1.5}
+.home-streak-txt span{color:var(--text)}
+.home-streak-pips{display:flex;gap:5px}
+.hsp{flex:1;height:8px;border-radius:4px;background:var(--panel2);border:1px solid var(--border)}
+.hsp.done{background:var(--orange);border-color:var(--orange)}
+.hsp.today{background:var(--yellow);border-color:var(--yellow);animation:nodeGlow .9s ease infinite}
+
+.home-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.home-stat-item{
+  background:var(--panel2);border:1px solid var(--border);
+  padding:10px 6px;text-align:center;display:flex;flex-direction:column;gap:3px;
+}
+.home-stat-item b{font-family:var(--px);font-weight:700;font-size:15px;color:var(--teal)}
+.home-stat-item span{font-size:12px;color:var(--dim)}
+
+.home-quick-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.home-quick-card{
+  background:var(--panel);border:2px solid var(--border);
+  padding:12px 6px;text-align:center;cursor:pointer;
+  display:flex;flex-direction:column;gap:4px;align-items:center;
+  transition:all .12s;
+}
+.home-quick-card:hover{border-color:var(--yellow);transform:translateY(-2px)}
+.hq-icon{font-size:20px}
+.hq-label{font-family:var(--px);font-weight:700;font-size:9px;color:var(--text);letter-spacing:1px}
+
+@media (max-width:640px){
+  .home-streak-num{font-size:30px}
+  .home-stats-grid{grid-template-columns:repeat(3,1fr)}
+  .hq-icon{font-size:22px}
+}
 
 /* DIFF */
 #s-diff{flex-direction:column;align-items:center;gap:14px;padding:40px 20px;min-height:100vh;justify-content:center}
@@ -216,6 +298,10 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .score-row{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--dim);padding:3px 10px;background:var(--panel);border:1px solid var(--border);flex-shrink:0}
 .score-row b{color:var(--text)}
 
+@keyframes streakPop{0%{transform:scale(1);color:var(--text)}40%{transform:scale(1.6);color:var(--yellow)}100%{transform:scale(1);color:var(--text)}}
+.streak-pop{animation:streakPop .35s ease}
+#sc-streak{display:inline-block}
+
 /* ── QUESTION PANEL ── */
 .q-panel{background:var(--panel);border:2px solid var(--border);padding:10px 14px;display:flex;flex-direction:column;gap:7px;width:100%;flex:1;overflow-y:auto}
 .q-meta{display:flex;justify-content:space-between;align-items:center}
@@ -365,10 +451,23 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
    ========================================================= */
 #s-title{
   flex-direction:column;align-items:center;justify-content:center;
-  gap:22px;padding:20px;height:100vh;overflow:hidden;
+  gap:22px;padding:20px;height:100vh;overflow:hidden;position:relative;
+}
+.title-menu-btn{
+  position:absolute;top:16px;right:16px;z-index:10;
+  width:38px;height:38px;
+  background:var(--panel2);border:2px solid var(--border);color:var(--text);
+  font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .12s;
+}
+.title-menu-btn:hover{border-color:var(--yellow);color:var(--yellow)}
+.title-menu-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;
 }
 .title-hero{display:flex;flex-direction:column;align-items:center;gap:10px}
-#s-title .title-dino{transform:scale(1.4)}
+#s-title .title-dino{transform:scale(1.8)}
+#s-title .title-dino svg{filter:drop-shadow(0 4px 6px rgba(0,0,0,.5))}
 #s-title .game-title{
   font-size:26px;line-height:1.7;letter-spacing:3px;
 }
@@ -442,6 +541,12 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 }
 .modal-title{font-family:var(--px);font-size:13px;color:var(--yellow);text-align:center;line-height:1.6}
 .modal-sub{font-size:17px;color:var(--dim);text-align:center}
+.practice-select{
+  width:100%;font-family:var(--vt);font-size:18px;
+  background:var(--panel2);border:2px solid var(--border);color:var(--text);
+  padding:8px 10px;cursor:pointer;outline:none;
+}
+.practice-select:focus{border-color:var(--red)}
 .streak-count{
   font-family:var(--px);font-size:30px;color:var(--orange);
   text-shadow:3px 3px 0 #5a2800;
@@ -537,7 +642,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   .reward-badge{font-size:8px;padding:1px 4px}
   .slide-stages{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
   .slide-stages > div{flex-wrap:nowrap!important;justify-content:flex-start!important;width:max-content!important;padding:0 4px;margin:0 auto}
-  .map-nav{width:34px;height:34px;font-size:11px}
+  .map-nav{display:none}
   .map-nav.prev{left:4px}
   .map-nav.next{right:4px}
   .sublevel-row{gap:4px}
@@ -608,30 +713,91 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 </style>
 <!-- TITLE -->
 <div id="s-title" class="screen on">
+  <button class="title-menu-btn" onclick="openTitleMenu()">☰</button>
+
   <div class="title-hero">
     <div class="title-dino" id="title-dino"></div>
     <div class="game-title">DINO<br>QUIZ BATTLE</div>
     <div class="sub-title">50 LEVELS &middot; 5 WORLDS</div>
   </div>
 
-    <div class="title-actions">
+  <div class="title-actions">
     <button class="pbtn g" id="continue-btn" style="display:none" onclick="continueGame()">CONTINUE RUN</button>
-    <button class="pbtn y" onclick="onStartClicked()">START GAME</button>
-    <button class="pbtn b sm" onclick="openIntro()">HOW TO PLAY</button>
-    <button class="pbtn b sm" onclick="openPowerupGuide()">POWERUP GUIDE</button>
-    <button class="pbtn b sm" onclick="show('s-lb');renderLB()">LEADERBOARD</button>
-  </div>
-
-  <div class="title-features">
-    <div class="tf-item"><b>50</b><span>Levels</span></div>
-    <div class="tf-item"><b>10</b><span>Bosses</span></div>
-    <div class="tf-item"><b>22</b><span>Powerups</span></div>
-    <div class="tf-item"><b>&infin;</b><span>Counters</span></div>
+    <button class="pbtn y" onclick="show('s-home');renderHome()">START GAME</button>
   </div>
 
   <div class="title-note" id="saved-note" style="display:none"></div>
 </div>
 
+<!-- TITLE MENU MODAL -->
+<div class="modal-overlay" id="title-menu-modal">
+  <div class="modal-box" style="max-width:340px;border-color:var(--blue);box-shadow:0 0 40px rgba(74,158,255,.2)">
+    <div class="modal-title" style="color:var(--blue)">MENU</div>
+    <div style="width:100%;display:flex;flex-direction:column;gap:8px">
+      <button class="pbtn b" style="width:100%" onclick="closeModal('title-menu-modal');openIntro()">HOW TO PLAY</button>
+      <button class="pbtn b" style="width:100%" onclick="closeModal('title-menu-modal');openPowerupGuide()">POWERUP GUIDE</button>
+      <button class="pbtn r" style="width:100%" onclick="confirmResetProgress()">RESET PROGRESS</button>
+    </div>
+    <button class="pbtn sm" style="color:var(--dim);border-color:var(--border)" onclick="closeModal('title-menu-modal')">CLOSE</button>
+  </div>
+</div>
+
+<!-- RESET CONFIRM MODAL -->
+<div class="modal-overlay" id="reset-confirm-modal">
+  <div class="modal-box" style="max-width:340px;border-color:var(--red);box-shadow:0 0 40px rgba(232,69,69,.2)">
+    <div class="modal-title" style="color:var(--red)">RESET RUN?</div>
+    <div class="modal-sub">This clears your current saved run (stage, HP, inventory). Your leaderboard scores and daily streak are kept.</div>
+    <div style="width:100%;display:flex;gap:8px">
+      <button class="pbtn sm" style="flex:1;color:var(--dim);border-color:var(--border)" onclick="closeModal('reset-confirm-modal')">CANCEL</button>
+      <button class="pbtn r sm" style="flex:1" onclick="doResetProgress()">ERASE</button>
+    </div>
+  </div>
+</div>
+
+<!-- HOME / HUB -->
+<div id="s-home" class="screen">
+  <div class="home-topbar">
+    <button class="pbtn sm" style="color:var(--dim);border-color:var(--border)" onclick="show('s-home');renderHome()">← BACK</button>
+    <div class="home-title-txt">HOME BASE</div>
+    <button class="title-menu-btn static" onclick="openTitleMenu()">☰</button>
+  </div>
+
+  <div class="home-scroll">
+
+    <!-- Streak card -->
+    <div class="home-card streak-card">
+      <div class="home-card-lbl">DAILY STREAK</div>
+      <div class="home-streak-row">
+        <div class="home-streak-num" id="home-streak-num">0</div>
+        <div class="home-streak-txt">DAY STREAK<br><span id="home-streak-sub">Come back tomorrow!</span></div>
+      </div>
+      <div class="home-streak-pips" id="home-streak-pips"></div>
+    </div>
+
+    <!-- Stats card -->
+    <div class="home-card">
+      <div class="home-card-lbl">YOUR PROGRESS</div>
+      <div class="home-stats-grid" id="home-stats-grid"></div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="home-quick-grid">
+      <div class="home-quick-card" onclick="continueGame()">
+        <div class="hq-icon">▶️</div>
+        <div class="hq-label">Continue</div>
+      </div>
+      <div class="home-quick-card" onclick="onStartClicked()">
+        <div class="hq-icon">⚔️</div>
+        <div class="hq-label">New Run</div>
+      </div>
+      <div class="home-quick-card" onclick="openPractice()">
+        <div class="hq-icon">🎯</div>
+        <div class="hq-label">Practice</div>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <!-- DIFF -->
 <div id="s-diff" class="screen">
@@ -726,6 +892,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
       <div class="pp-passive" id="pp-boss" style="font-size:15px">—</div>
     </div>
 
+    <button class="pbtn r sm" style="flex-shrink:0;align-self:center" onclick="quitBattle()">QUIT</button>
     <div class="gtb" style="min-width:130px;flex-shrink:0">
       <div class="gtb-lbl">PERM ATTRS</div>
       <div class="attr-grid" id="attr-grid" style="gap:2px"></div>
@@ -872,6 +1039,35 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   </div>
 </div>
 
+<!-- PRACTICE MODE MODAL -->
+<div class="modal-overlay" id="practice-modal">
+  <div class="modal-box" style="max-width:420px;border-color:var(--red);box-shadow:0 0 40px rgba(232,69,69,.2)">
+    <div class="modal-title" style="color:var(--red)">PRACTICE MODE</div>
+    <div class="modal-sub">Jump straight into any stage. Full stats, no save changes.</div>
+
+    <div style="width:100%;display:flex;flex-direction:column;gap:6px">
+      <div style="font-family:var(--px);font-size:6px;color:var(--dim);letter-spacing:1px">STAGE</div>
+      <select id="practice-stage-sel" class="practice-select" onchange="onPracticeStageChange()"></select>
+    </div>
+
+    <div id="practice-preview" style="width:100%;display:flex;align-items:center;gap:10px;background:var(--panel2);border:1px solid var(--border);padding:8px 10px">
+      <span id="practice-icon" style="font-size:26px"></span>
+      <div style="flex:1">
+        <div id="practice-name" style="font-family:var(--px);font-size:8px;color:var(--yellow)"></div>
+        <div id="practice-passive" style="font-size:13px;color:var(--teal);margin-top:3px"></div>
+      </div>
+    </div>
+
+    <div style="width:100%;display:flex;flex-direction:column;gap:6px">
+      <div style="font-family:var(--px);font-size:6px;color:var(--dim);letter-spacing:1px">LEVEL</div>
+      <select id="practice-level-sel" class="practice-select"></select>
+    </div>
+
+    <button class="pbtn g" style="width:100%" onclick="confirmPractice()">START BATTLE</button>
+    <button class="pbtn sm" style="color:var(--dim);border-color:var(--border)" onclick="closeModal('practice-modal')">CLOSE</button>
+  </div>
+</div>
+
 <!-- POWERUP GUIDE MODAL -->
 <div class="modal-overlay" id="pu-guide-modal">
   <div class="modal-box" style="max-width:600px;border-color:var(--purple);box-shadow:0 0 40px rgba(176,106,255,.2)">
@@ -883,7 +1079,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 </div>
 
 <script>
-/* ══ dino.js ══ */
+  /* ══ dino.js ══ */
 
 /* ══ SPRITES ══ */
 const SPR_PLAYER=`<svg width="60" height="64" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -913,6 +1109,21 @@ const ECOL=[
   {body:'#6a5a00',dark:'#2a2400',eye:'#ffdd44'},
   {body:'#1a5a8b',dark:'#002244',eye:'#aaddff'},
   {body:'#0a000a',dark:'#000',eye:'#ff0088',boss:true,crown:'#ffaa00'},
+  {body:'#f5c842',dark:'#8a6a00',eye:'#ffffff'},
+  {body:'#ff4500',dark:'#8a2000',eye:'#ffdd00'},
+  {body:'#8a7a5a',dark:'#4a3a1a',eye:'#00e5ff'},
+  {body:'#2a0a4a',dark:'#12002a',eye:'#ff00ff'},
+  {body:'#4a1a8b',dark:'#1a0044',eye:'#ffffff',boss:true,crown:'#00e5ff'},
+  {body:'#00b0c8',dark:'#004a5a',eye:'#ffffff'},
+  {body:'#4a4a5a',dark:'#1a1a2a',eye:'#ff0088'},
+  {body:'#6a00c8',dark:'#2a004a',eye:'#00ffcc'},
+  {body:'#ffb000',dark:'#8a5800',eye:'#ff4500'},
+  {body:'#0a0a2a',dark:'#000',eye:'#4a9eff',boss:true,crown:'#e84545'},
+  {body:'#8a5a2a',dark:'#4a2a10',eye:'#ffdd00'},
+  {body:'#2a2a8a',dark:'#12124a',eye:'#00e5ff',boss:true,crown:'#f5c842'},
+  {body:'#1a0000',dark:'#000',eye:'#ff0000',boss:true,crown:'#8B1A1A'},
+  {body:'#ffee00',dark:'#8a7a00',eye:'#ffffff',boss:true,crown:'#ffffff'},
+  {body:'#ffffff',dark:'#cccccc',eye:'#ffdd00',boss:true,crown:'#f5c842'},
 ];
 function makeSpr(c,size=60){
   const s=size/16,h=Math.round(size*1.06);
@@ -1347,6 +1558,7 @@ function freshState(diff){
     bossSpecialFired:false,rageMult:1,bossAtkCounter:0,omegaRageTwo:false,
     score:0,streak:0,combo:1,
     inv:{heal:1,double:0,freeze:0,poison:0,shield:0,fiftyf:0,burn:0,halfhp:0,paralyze:0,revive:0,regen:0,mirror:0,rage:0,stun:0,leech:0,barrier:0,divine:0,overload:0,gamble:0,nuke:0,oracle:0,insight:0,},
+    inBattle:false,
     activeEffects:[],eliminated:[],
     animLock:false,timerVal:0,timerInterval:null,
     qUsed:{easy:new Set(),medium:new Set(),hard:new Set()},
@@ -1360,7 +1572,7 @@ function showDiff(){show('s-diff');}
 const SAVE_KEY='dqb3_save';
 function hasSave(){try{return !!localStorage.getItem(SAVE_KEY);}catch(e){return false;}}
 function saveGame(){
-  if(!G||!G.diff)return;
+  if(!G||!G.diff||G.isPractice)return;
   try{
     const s=JSON.parse(JSON.stringify(G));
     // Sets can't be JSON'd  convert to arrays
@@ -1388,7 +1600,40 @@ function loadGame(){
 function clearSave(){try{localStorage.removeItem(SAVE_KEY);}catch(e){}}
 
 function fullReset(){clearSave();show('s-title');refreshTitle();}
-function quitToTitle(){saveGame();show('s-title');refreshTitle();}
+function quitToTitle(){if(!G.isPractice)saveGame();show('s-title');refreshTitle();}
+
+function quitBattle(){
+  clearInterval(G.timerInterval);
+  saveGame();
+  show('s-title');
+  refreshTitle();
+}
+
+function resumeBattle(){
+  const si=G.curStage,li=G.curLevel,stg=STAGES[si],lv=stg.levels[li];
+  const isBoss=!!(lv.boss||lv.mini||stg.isBoss),worldIdx=stg.world-1;
+  document.getElementById('player-spr').innerHTML=SPR_PLAYER;
+  const bEl=document.getElementById('boss-spr');
+  bEl.innerHTML=makeSpr(ECOL[stg.sprIdx],isBoss?90:68);
+  document.getElementById('g-stage').textContent=`S${si+1}-L${li+1}`;
+  document.getElementById('g-boss-name').textContent=lv.sub;
+  document.getElementById('boss-f-name').textContent=lv.sub;
+  const pIdx=Math.min(Math.floor(G.stagesCleared/3),PLAYER_PASSIVES.length-1);
+  document.getElementById('pp-player').textContent=PLAYER_PASSIVES[pIdx].label+' — '+PLAYER_PASSIVES[pIdx].desc;
+  let bd=stg.passive.label+' — '+stg.passive.desc;
+  const rk=Object.keys(stg.res||{});
+  if(rk.length)bd+=' | RES: '+rk.map(k=>stg.res[k]===0?`${k.toUpperCase()}×IMM`:`${k.toUpperCase()} ${Math.round((1-stg.res[k])*100)}%↓`).join(', ');
+  document.getElementById('pp-boss').textContent=bd;
+  document.getElementById('stage-info').textContent=`${stg.name} — HP:${G.bossMaxHP} ATK:${lv.atk[0]}–${lv.atk[1]}`;
+  const bc2=document.getElementById('battle-canvas');
+  requestAnimationFrame(()=>{bc2.width=bc2.offsetWidth||400;bc2.height=bc2.offsetHeight||260;drawBattleBg(bc2,isBoss,worldIdx);});
+  document.getElementById('battle-content').classList.remove('walk-hidden');
+  document.getElementById('walk-layer').style.display='none';
+  renderAttrs();updateBars();renderInventory();renderEffects();
+  setMsg('⚔ Battle resumed!','var(--teal)');
+  show('s-game');
+  nextQ();
+}
 
 
 /* Called by the START button on the title screen */
@@ -1400,8 +1645,8 @@ function onStartClicked(){
 /* Called by CONTINUE button */
 function continueGame(){
   if(!loadGame()){refreshTitle();return;}
-  buildMap();
-  show('s-map');
+  if(G.inBattle){resumeBattle();}
+  else{buildMap();show('s-map');}
 }
 /* Update the title screen based on whether a save exists */
 function refreshTitle(){
@@ -1444,6 +1689,7 @@ function goStartupPick(){
 let _curWorld=0; // 0-indexed currently-viewed world
 
 function buildMap(){
+G.inBattle=false;
   document.getElementById('mhp').textContent=G.playerMaxHP;
   document.getElementById('matk').textContent='+'+G.pATK;
   document.getElementById('mres').textContent=G.pRES+'%';
@@ -1649,6 +1895,7 @@ function playWalkInBattle(si,li,onDone){
 }
 
 function loadLevel(si,li){
+  G.inBattle=true;
   const stg=STAGES[si],lv=stg.levels[li];
   const isBoss=!!(lv.boss||lv.mini||stg.isBoss),worldIdx=stg.world-1;
   const lvScale  = 1 + (li  * 0.18);
@@ -1750,9 +1997,17 @@ function onAnswer(chosen,btnEl,idx){
   if(correct){
     sfx.correct();G.streak++;G.combo=Math.min(8,1+Math.floor(G.streak/3));
     document.getElementById('sc-streak').textContent=G.streak;document.getElementById('sc-combo').textContent=`×${G.combo}`;
+    const streakEl=document.getElementById('sc-streak');
+    streakEl.classList.remove('streak-pop');void streakEl.offsetWidth;streakEl.classList.add('streak-pop');
     const pIdx=Math.min(Math.floor(G.stagesCleared/3),PLAYER_PASSIVES.length-1);
     const tierBonus={easy:12,medium:22,hard:34}[G.currentQ.tier]||12;
-    let dmg=(tierBonus+G.timerVal*1.8)*G.combo;
+    const streakBonus=G.streak*3;
+    let dmg=(tierBonus+G.timerVal*1.8+streakBonus)*G.combo;
+    if([5,10,15,20,25,30].includes(G.streak)){
+      dmg=Math.floor(dmg*1.5);
+      spawnFloat(`🔥 STREAK ${G.streak}!`,'var(--yellow)',false);
+      sfx.powerup();
+    }
     const hasDouble=G.activeEffects.find(e=>e.type==='double');if(hasDouble){dmg*=2;G.activeEffects=G.activeEffects.filter(e=>e!==hasDouble);}
     const hasOverload=G.activeEffects.find(e=>e.type==='overload');if(hasOverload){dmg*=3;G.activeEffects=G.activeEffects.filter(e=>e!==hasOverload);}
     dmg+=G.pATK;if(pIdx>=1)dmg+=10;if(pIdx>=2)dmg+=14;if(pIdx>=3)dmg+=20;
@@ -1769,6 +2024,7 @@ function onAnswer(chosen,btnEl,idx){
   } else {
     sfx.wrong();G.streak=0;G.combo=Math.max(1,G.combo-1);
     document.getElementById('sc-streak').textContent=0;document.getElementById('sc-combo').textContent=`×${G.combo}`;
+    document.getElementById('sc-streak').classList.remove('streak-pop');
     setMsg(`✗ Wrong! Answer: ${G.currentQ.a} — Boss attacks!`,'var(--red)');setTurnIndicator(false);
     setTimeout(()=>bossAttacks(()=>{G.animLock=false;if(G.playerHP>0)setTimeout(nextQ,400);}),700);
   }
@@ -1791,7 +2047,7 @@ function bossAttacks(cb){
   if(para){para.turns--;if(para.turns<=0)G.activeEffects=G.activeEffects.filter(e=>e!==para);renderEffects();showParalyzeOverlay();setMsg(`⚡ ${lv.sub} PARALYZED! Skips!`,'var(--cyan)');doAnim('boss-f','aS',()=>{if(cb)cb();});return;}
   G.bossAtkCounter++;if(stg.spFn)stg.spFn(G);
   let dmg=Math.floor(Math.random()*(G.bossAtkMax-G.bossAtkMin+1))+G.bossAtkMin;
-dmg=Math.floor(dmg*(G.rageMult||1));dmg=Math.floor(dmg*(G.rageMult||1));
+  dmg=Math.floor(dmg*(G.rageMult||1));  
   if(G.pRES>0) dmg=Math.floor(dmg*(1-resMitigation(G.pRES)));
   // Barrier — fully blocks hit
   const barrier=G.activeEffects.find(e=>e.type==='barrier');
@@ -1996,7 +2252,7 @@ return['heal','heal','double','double','freeze','poison','poison','shield','fift
 function handleLevelWin(){
   clearInterval(G.timerInterval);sfx.victory();
   const si=G.curStage,li=G.curLevel,stg=STAGES[si],lv=stg.levels[li];
-  const isFinalLevel=li===4,isFinalStage=si===9&&isFinalLevel;
+  const isFinalLevel=li===4,isFinalStage=si===24&&isFinalLevel;
   const attr=lv.attr;G.pHP+=attr.hp;G.pATK+=attr.atk;G.pRES=Math.min(400,G.pRES+attr.res);G.playerMaxHP=500+G.pHP;G.playerHP=Math.min(G.playerHP+attr.hp,G.playerMaxHP);
   G.levelsCleared[si]=Math.max(G.levelsCleared[si],li+1);if(isFinalLevel)G.stagesCleared++;
   if(isFinalStage){setTimeout(()=>endGame(true),600);return;}
@@ -2008,7 +2264,13 @@ function handleLevelWin(){
   if(attr.hp)addRow('❤','Max HP & Heal',attr.hp);if(attr.atk)addRow('⚔','Attack Bonus',attr.atk);if(attr.res)addRow('🛡','Resistance',attr.res+'%');
   if(lv.boss&&si===4){const r=document.createElement('div');r.className='aw-row';r.innerHTML='<span class="aw-icon">💥</span><span class="aw-text" style="color:var(--orange)">EMBER KING DEFEATED! ATK×1.2 permanent!</span><span class="aw-val" style="color:var(--orange)">RARE</span>';gains.appendChild(r);G.pATK=Math.floor(G.pATK*1.2);}
   if(lv.boss&&si===9){const r=document.createElement('div');r.className='aw-row';r.innerHTML='<span class="aw-icon">🌟</span><span class="aw-text" style="color:var(--yellow)">OMEGA REX SLAIN! All stats ×1.5!</span><span class="aw-val" style="color:var(--yellow)">LEGEND</span>';gains.appendChild(r);}
-    document.getElementById('aw-btn').onclick=()=>{
+  if(lv.boss&&si===14){const r=document.createElement('div');r.className='aw-row';r.innerHTML='<span class="aw-icon">🌌</span><span class="aw-text" style="color:var(--purple)">COSMOS PRIME DEFEATED! All stats ×1.4!</span><span class="aw-val" style="color:var(--purple)">EPIC</span>';gains.appendChild(r);G.pHP=Math.floor(G.pHP*1.4);G.pATK=Math.floor(G.pATK*1.4);G.pRES=Math.floor(G.pRES*1.4);G.playerMaxHP=500+G.pHP;G.playerHP=G.playerMaxHP;}
+  if(lv.boss&&si===19){const r=document.createElement('div');r.className='aw-row';r.innerHTML='<span class="aw-icon">🕳️</span><span class="aw-text" style="color:var(--cyan)">SINGULARITY ALPHA DEFEATED! All stats ×1.4!</span><span class="aw-val" style="color:var(--cyan)">EPIC</span>';gains.appendChild(r);G.pHP=Math.floor(G.pHP*1.4);G.pATK=Math.floor(G.pATK*1.4);G.pRES=Math.floor(G.pRES*1.4);G.playerMaxHP=500+G.pHP;G.playerHP=G.playerMaxHP;}
+  if(lv.boss&&si===20){const r=document.createElement('div');r.className='aw-row';r.innerHTML='<span class="aw-icon">🛠️</span><span class="aw-text" style="color:var(--orange)">VULCAN DEFEATED! All stats ×1.3!</span><span class="aw-val" style="color:var(--orange)">LEGEND</span>';gains.appendChild(r);G.pHP=Math.floor(G.pHP*1.3);G.pATK=Math.floor(G.pATK*1.3);G.pRES=Math.floor(G.pRES*1.3);G.playerMaxHP=500+G.pHP;G.playerHP=G.playerMaxHP;}
+  if(lv.boss&&si===21){const r=document.createElement('div');r.className='aw-row';r.innerHTML='<span class="aw-icon">⏳</span><span class="aw-text" style="color:var(--cyan)">CHRONOS DEFEATED! All stats ×1.3!</span><span class="aw-val" style="color:var(--cyan)">LEGEND</span>';gains.appendChild(r);G.pHP=Math.floor(G.pHP*1.3);G.pATK=Math.floor(G.pATK*1.3);G.pRES=Math.floor(G.pRES*1.3);G.playerMaxHP=500+G.pHP;G.playerHP=G.playerMaxHP;}
+  if(lv.boss&&si===22){const r=document.createElement('div');r.className='aw-row';r.innerHTML='<span class="aw-icon">🐙</span><span class="aw-text" style="color:var(--purple)">CTHULHU LEGACY DEFEATED! All stats ×1.3!</span><span class="aw-val" style="color:var(--purple)">LEGEND</span>';gains.appendChild(r);G.pHP=Math.floor(G.pHP*1.3);G.pATK=Math.floor(G.pATK*1.3);G.pRES=Math.floor(G.pRES*1.3);G.playerMaxHP=500+G.pHP;G.playerHP=G.playerMaxHP;}
+  if(lv.boss&&si===23){const r=document.createElement('div');r.className='aw-row';r.innerHTML='<span class="aw-icon">💫</span><span class="aw-text" style="color:var(--pink)">AMATERASU DEFEATED! All stats ×1.3!</span><span class="aw-val" style="color:var(--pink)">MYTHIC</span>';gains.appendChild(r);G.pHP=Math.floor(G.pHP*1.3);G.pATK=Math.floor(G.pATK*1.3);G.pRES=Math.floor(G.pRES*1.3);G.playerMaxHP=500+G.pHP;G.playerHP=G.playerMaxHP;}
+  document.getElementById('aw-btn').onclick=()=>{
     // Offer a 1-of-3 pick when the NEXT level is an odd level (index 0,2,4 = levels 1,3,5)
     if(nextLi % 2 === 0){
       goMidPick(nextSi,nextLi);
@@ -2222,9 +2484,24 @@ function spawnFloat(txt,color,isBoss){const ba=document.getElementById('battle-a
 function doAnim(id,cls,cb){const el=document.getElementById(id);el.classList.add(cls);setTimeout(()=>{el.classList.remove(cls);if(cb)cb();},460);}
 
 function endGame(win){
-  clearSave();
+G.inBattle=false;
+  if(!G.isPractice)clearSave();
+function endGame(win){
+G.inBattle=false;
+  if(win&&!G.isPractice){
+    // one-time final completion bonus
+    G.score+=5000;
+    G.inv.divine=(G.inv.divine||0)+3;
+  }
+  if(!G.isPractice)clearSave();
   clearInterval(G.timerInterval);
   G.animLock=true;
+  const title=document.getElementById('end-title');
+  title.textContent=win?'👑 GAME COMPLETE! 👑':'💀 GAME OVER';
+  title.style.color=win?'var(--yellow)':'var(--red)';
+  document.getElementById('end-dino').innerHTML=SPR_PLAYER;
+  const bonusLine=win?`<br><span style="color:var(--yellow)">🎉 Completion Bonus: +5000 Score!</span>`:'';
+  document.getElementById('end-stats').innerHTML=`${win?'You defeated ETERNUS PRIME and saved the realm!<br><br>':''}Score: ${G.score}<br>Stage: S${G.curStage+1}-L${G.curLevel+1}<br>Max HP: ${G.playerMaxHP}<br>ATK Bonus: +${G.pATK}<br>Resistance: ${G.pRES}%<br>Difficulty: ${G.diff.toUpperCase()}${bonusLine}`;document.getElementById('name-in').value='';if(win)sfx.victory();else sfx.gameover();show('s-end');}  G.animLock=true;
   const title=document.getElementById('end-title');
   title.textContent=win?'🏆 VICTORY!':'💀 GAME OVER';
   title.style.color=win?'var(--yellow)':'var(--red)';
@@ -2351,6 +2628,51 @@ document.getElementById('intro-next').onclick=()=>{
 };
 document.getElementById('intro-prev').onclick=()=>{if(_introPage>0){_introPage--;renderIntro();}};
 
+/* ---------- PRACTICE MODE ---------- */
+function openPractice(){
+  const sel=document.getElementById('practice-stage-sel');
+  sel.innerHTML=STAGES.map((stg,si)=>
+    `<option value="${si}">S${si+1} — ${stg.name}</option>`
+  ).join('');
+  sel.value=0;
+  onPracticeStageChange();
+  document.getElementById('practice-modal').classList.add('on');
+}
+
+function onPracticeStageChange(){
+  const si=+document.getElementById('practice-stage-sel').value;
+  const stg=STAGES[si];
+  document.getElementById('practice-icon').textContent=stg.icon;
+  document.getElementById('practice-name').textContent=`S${si+1} — ${stg.name}`;
+  document.getElementById('practice-passive').textContent=stg.passive.label+' — '+stg.passive.desc;
+  const lvlSel=document.getElementById('practice-level-sel');
+  lvlSel.innerHTML=stg.levels.map((lv,li)=>
+    `<option value="${li}">L${li+1} — ${lv.sub}${lv.boss?' (BOSS)':lv.mini?' (Mini-Boss)':''}</option>`
+  ).join('');
+  lvlSel.value=0;
+}
+
+function confirmPractice(){
+  const si=+document.getElementById('practice-stage-sel').value;
+  const li=+document.getElementById('practice-level-sel').value;
+  startPractice(si,li);
+}
+
+function startPractice(si,li){
+  closeModal('practice-modal');
+  G=freshState('medium');
+  G.isPractice=true;
+  G.pickDone=true;
+  // give strong preset stats scaled to the target stage so it's actually winnable
+  G.pHP=si*40+20;G.pATK=si*8+10;G.pRES=Math.min(75,si*3+10);
+  G.playerMaxHP=500+G.pHP;G.playerHP=G.playerMaxHP;
+  // full inventory of every powerup for testing
+  Object.keys(G.inv).forEach(k=>G.inv[k]=5);
+  G.curStage=si;G.curLevel=li;
+  show('s-game');
+  loadLevel(si,li);
+}
+
 /* ---------- POWERUP GUIDE ---------- */
 function openPowerupGuide(){
   const list=document.getElementById('pu-guide-list');
@@ -2367,6 +2689,49 @@ function openPowerupGuide(){
   document.getElementById('pu-guide-modal').classList.add('on');
 }
 
+function openTitleMenu(){document.getElementById('title-menu-modal').classList.add('on');}
+function confirmResetProgress(){
+  closeModal('title-menu-modal');
+  document.getElementById('reset-confirm-modal').classList.add('on');
+}
+function doResetProgress(){
+  clearSave();
+  closeModal('reset-confirm-modal');
+  refreshTitle();
+  if(document.getElementById('s-home').classList.contains('on'))renderHome();
+}
+/* ---------- HOME / HUB ---------- */
+function renderHome(){
+    const contCard=document.querySelector('#s-home [onclick="continueGame()"]');
+  if(contCard)contCard.style.opacity=hasSave()?'1':'0.35';function openTitleMenu(){document.getElementById('title-menu-modal').classList.add('on');}
+  const d=getDaily();
+  document.getElementById('home-streak-num').textContent=d.streak||0;
+  document.getElementById('home-streak-sub').textContent=
+    d.streak>0?`Best run: keep it going!`:`Start today to begin your streak`;
+  const pips=document.getElementById('home-streak-pips');
+  const cycleDay=((d.streak||0)-1+7)%7;
+  pips.innerHTML=Array.from({length:7}).map((_,i)=>{
+    let cls='hsp';
+    if(d.streak>0){
+      if(i<cycleDay)cls+=' done';
+      else if(i===cycleDay)cls+=' today';
+    }
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  const board=getBoard();
+  const bestScore=board.length?Math.max(...board.map(b=>b.score)):0;
+  let savedInfo={stage:'—',diff:'—'};
+  try{
+    const s=JSON.parse(localStorage.getItem(SAVE_KEY));
+    if(s)savedInfo={stage:`S${(s.curStage||0)+1}-L${(s.curLevel||0)+1}`,diff:(s.diff||'—').toUpperCase()};
+  }catch(e){}
+  document.getElementById('home-stats-grid').innerHTML=`
+    <div class="home-stat-item"><b>${bestScore}</b><span>Best Score</span></div>
+    <div class="home-stat-item"><b>${savedInfo.stage}</b><span>Last Stage</span></div>
+    <div class="home-stat-item"><b>${savedInfo.diff}</b><span>Difficulty</span></div>
+  `;
+}
 function closeModal(id){document.getElementById(id).classList.remove('on');}
 
 // First-ever visit: show intro, then daily streak
