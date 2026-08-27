@@ -1172,6 +1172,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
+  
   /* ══ dino.js ══ */
 
 /* ══ SPRITES ══ */
@@ -2905,6 +2906,7 @@ function beep(f,t,d,v=.22){try{const c=ac(),o=c.createOscillator(),g=c.createGai
 const sfx={correct:()=>{beep(523,'sine',.08,.2);setTimeout(()=>beep(659,'sine',.08,.2),90);setTimeout(()=>beep(784,'sine',.12,.2),180);},wrong:()=>{beep(200,'sawtooth',.12,.3);setTimeout(()=>beep(150,'sawtooth',.12,.3),110);},hit:()=>{beep(180,'sawtooth',.13,.35);setTimeout(()=>beep(130,'sawtooth',.1,.3),100);},powerup:()=>{[440,554,659,880].forEach((f,i)=>setTimeout(()=>beep(f,'sine',.1,.2),i*55));},halfhp:()=>{[220,330,440,550,660,880].forEach((f,i)=>setTimeout(()=>beep(f,'square',.12,.35),i*60));},victory:()=>{[523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,'square',.18,.3),i*110));},gameover:()=>{[440,330,220,165].forEach((f,i)=>setTimeout(()=>beep(f,'sawtooth',.25,.4),i*180));},tick:()=>beep(880,'square',.04,.15),stage:()=>{[392,494,587,784].forEach((f,i)=>setTimeout(()=>beep(f,'square',.15,.28),i*90));},};
 
 document.getElementById('title-dino').innerHTML=SPR_PLAYER;
+if(window.lucide)lucide.createIcons();
 
 /* ---------- DAILY STREAK ---------- */
 const DAILY_KEY='dqb3_daily';
